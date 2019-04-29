@@ -17,6 +17,8 @@ def main():
 
     se = SerialCheck.SerialCheck('/dev/ttyUSB0')
     se.PshCheck()
+    se.keysearch(["version","EKIKWF","12345678"], 60)
+    se.close()
 
     np = PortScan.Portscan(ip, port)
     np.run()
