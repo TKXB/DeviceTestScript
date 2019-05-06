@@ -9,7 +9,7 @@ class SerialCheck(object):
         result = self.ser.read(200)
         print("------------")
         print(result)
-        if result.__contains__(b'netmask'):
+        if result.__contains__(b'netmask') or result.__contains__(b'127.0.0.1'):
             print("\033[1;31mcan execute linux commands\n\033[0m")
         else:
             print("\033[1;32mcan not execute linux commands\n\033[0m")
@@ -19,6 +19,7 @@ class SerialCheck(object):
         while True:
             time_end = time.time()
             if time_end - time_start > interval:
+                print("Search Finished\r\n")
                 return
             line = self.ser.readline()
             for word in dict:
