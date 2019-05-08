@@ -14,7 +14,10 @@ class SerialCheck(object):
         else:
             print("\033[1;32mcan not execute linux commands\n\033[0m")
 
-    def keysearch(self, dict, interval):
+    def keysearch(self):
+        userinput = input("Enter search keywords: ")
+        interval = int(input("Enter search duration: "))
+        dict = [n for n in userinput.split()]
         time_start = time.time()
         while True:
             time_end = time.time()

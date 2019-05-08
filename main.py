@@ -17,7 +17,7 @@ def main():
 
     se = SerialCheck.SerialCheck('/dev/ttyUSB0')
     se.PshCheck()
-    se.keysearch(["CBMDIP","12345678"], 60)
+    se.keysearch()
     se.close()
 
     np = PortScan.Portscan(ip, port)
