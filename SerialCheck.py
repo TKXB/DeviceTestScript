@@ -2,11 +2,16 @@ import serial
 import time
 class SerialCheck(object):
     def __init__(self, path):
-        self.ser = serial.Serial(path, 115200, timeout=3)
+        try:
+            self.ser = serial.Serial(path, 115200, timeout=3)
+        except OSError:
+            print("Failed to read serial port, please re-insert\r\n")
+            time.sleep(10)
+            self.ser = serial.Serial(path, 115200, timeout=3)
 
     def PshCheck(self):
         self.ser.write(b'ifconfig\r')
-        result = self.ser.read(200)
+        result = self.ser.read(500)
         print("------------")
         print(result)
         if result.__contains__(b'netmask') or result.__contains__(b'127.0.0.1'):
