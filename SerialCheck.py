@@ -1,5 +1,7 @@
 import serial
 import time
+
+
 class SerialCheck(object):
     def __init__(self, path):
         try:
@@ -36,3 +38,5 @@ class SerialCheck(object):
 
     def close(self):
         self.ser.close()
+
+# UBOOT CHECK
