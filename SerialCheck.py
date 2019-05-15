@@ -40,3 +40,4 @@ class SerialCheck(object):
         self.ser.close()
 
 # UBOOT CHECK
+# Hit Ctrl+u to stop autoboot:
