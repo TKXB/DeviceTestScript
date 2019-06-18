@@ -4,6 +4,7 @@ import os
 
 class WifiCheck:
     def __init__(self, path):
+        print("Please insert the network card")
         self.path = path
 
     def run(self):

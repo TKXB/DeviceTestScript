@@ -9,8 +9,8 @@ def main():
     parser.add_argument('ip', metavar='target_host',
                         type=str,
                         help='Device\'s ip address')
-    parser.add_argument('port', metavar='target_port',
-                        type=int,
+    parser.add_argument('--port', metavar='target_port',
+                        type=str,
                         help='Port number of device under test')
     parser.add_argument('--testwifi', metavar='yes|no',
                         type=str2bool,
@@ -20,6 +20,7 @@ def main():
     if args.testwifi is True:
         wificheck = External.WifiCheck("/root/Downloads/SecurityVulnerabilityDetectionTool_v1.3/vdt-v1.3/vdt_wts/")
         wificheck.run()
+        exit()
 
     se = SerialCheck.SerialCheck('/dev/ttyUSB0')
     se.PshCheck()

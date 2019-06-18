@@ -16,7 +16,7 @@ class SerialCheck(object):
         result = self.ser.read(500)
         print("------------")
         print(result)
-        if result.__contains__(b'netmask') or result.__contains__(b'127.0.0.1'):
+        if result.__contains__(b'netmask') or result.__contains__(b'127.0.0.1') or result.__contains__(b'BROADCAST'):
             print("\033[1;31mcan execute linux commands\n\033[0m")
         else:
             print("\033[1;32mcan not execute linux commands\n\033[0m")
