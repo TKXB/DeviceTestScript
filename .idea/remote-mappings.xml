@@ -12,6 +12,7 @@
           </settings>
         </remote-mappings>
         <remote-mappings server-id="python@ssh://root@192.168.1.81:22/usr/bin/python3" />
+        <remote-mappings server-id="python@sftp://root@192.168.43.197:22/usr/bin/python3" />
       </list>
     </list>
   </component>

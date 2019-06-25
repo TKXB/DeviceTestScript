@@ -7,7 +7,7 @@ class Portscan(object):
 
     def run(self):
         self.nm = nmap.PortScanner()
-        if self.port != None:
+        if self.port != "":
             self.nm.scan(self.ip, self.port)
         else:
             self.nm.scan(self.ip)
@@ -19,6 +19,15 @@ class Portscan(object):
                 return True
         else:
             print("RTSP/554 port is not open")
+            return False
+
+    def isHttpOpen(self):
+        if 80 in self.nm[self.ip]['tcp']:
+            if self.nm[self.ip]['tcp'][80]['state'] == 'open':
+                print("HTTP/80 port is open")
+                return True
+        else:
+            print("HTTP/80 port is not open")
             return False
 
     def getAllPort(self):
