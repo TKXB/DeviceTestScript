@@ -40,7 +40,7 @@ def serialcheck():
 
 def portscan():
     ip = input("input ip address: ")
-    port = input("input port number: ")
+    port = input("input port number(Default all): ")
     np = PortScan.Portscan(ip, port)
     np.run()
     np.getAllPort()
