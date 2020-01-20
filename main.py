@@ -1,8 +1,12 @@
-import RtspCheck
-import PortScan
-import SerialCheck
-import External
+# coding:utf-8
+
+import rtspcheck
+import portscan
+import serialcheck
+import external
 import argparse
+import report
+import device
 
 def print_title():
     print("""
@@ -27,31 +31,33 @@ def print_menu():
     1 - SerialCheck
     2 - PortScan 
     3 - WIFICheck
-    4 - Exit
+    4 - generateReport
+    5 - Exit
     """)
 
 
 def serialcheck():
-    se = SerialCheck.SerialCheck('/dev/ttyUSB0')
+    se = serialcheck.SerialCheck('/dev/ttyUSB0')
     se.PshCheck()
     se.keysearch()
     se.close()
 
 
 def portscan():
+    global device
     ip = input("input ip address: ")
     port = input("input port number(Default all): ")
-    np = PortScan.Portscan(ip, port)
+    np = portscan.Portscan(ip, port)
     np.run()
-    np.getAllPort()
+    np.getAllPort(device)
 
     r = np.isRtspOpen()
     if r:
-        rt = RtspCheck.EmptyRtspPasswordCheck(ip)
+        rt = rtspcheck.EmptyRtspPasswordCheck(ip)
         rt.run()
 
 def WIFIcheck():
-    wificheck = External.WifiCheck("/root/Downloads/SecurityVulnerabilityDetectionTool_v1.3/vdt-v1.3/vdt_wts/")
+    wificheck = external.WifiCheck("/root/Downloads/SecurityVulnerabilityDetectionTool_v1.3/vdt-v1.3/vdt_wts/")
     wificheck.run()
 
 
@@ -62,6 +68,11 @@ def str2bool(v):
         return False
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
+
+def generateReport():
+    global device
+    report = report.GenerateReport(device)
+    report.run()
 
 
 def main():
@@ -87,7 +98,8 @@ def main():
             1: serialcheck,
             2: portscan,
             3: WIFIcheck,
-            4: exit
+            4: generateReport,
+            5: exit
         }
         sel = int(input("input your choice: "))
         choice.get(sel, print_menu)()
@@ -95,6 +107,9 @@ def main():
 
 
 if __name__ == "__main__":
+    #设备全局变量
+    #
+    device = device.DeviceInfo()
     main()
 
 
