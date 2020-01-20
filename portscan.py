@@ -30,7 +30,7 @@ class Portscan(object):
             print("HTTP/80 port is not open")
             return False
 
-    def getAllPort(self, device):
+    def get_ports_and_hostname(self, device):
         for host in self.nm.all_hosts():
             print('----------------------------------------------------')
             print('Host : %s (%s)' % (host, self.nm[host].hostname()))

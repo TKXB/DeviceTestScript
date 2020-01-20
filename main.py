@@ -5,8 +5,14 @@ import portscan
 import serialcheck
 import external
 import argparse
-import report
+import reportbuilder
 import device
+import configparser
+
+# 加载配置文件
+config_raw = configparser.RawConfigParser()
+config_raw.read("./config.cfg")
+
 
 def print_title():
     print("""
@@ -36,8 +42,8 @@ def print_menu():
     """)
 
 
-def serialcheck():
-    se = serialcheck.SerialCheck('/dev/ttyUSB0')
+def serial_info_check():
+    se = serialcheck.SerialCheck(config_raw.get('DEFAULT', 'SERIAL_PATH'))
     se.PshCheck()
     se.keysearch()
     se.close()
@@ -49,15 +55,16 @@ def portscan():
     port = input("input port number(Default all): ")
     np = portscan.Portscan(ip, port)
     np.run()
-    np.getAllPort(device)
+    np.get_ports_and_hostname(device)
 
     r = np.isRtspOpen()
     if r:
         rt = rtspcheck.EmptyRtspPasswordCheck(ip)
         rt.run()
 
+
 def WIFIcheck():
-    wificheck = external.WifiCheck("/root/Downloads/SecurityVulnerabilityDetectionTool_v1.3/vdt-v1.3/vdt_wts/")
+    wificheck = external.WifiCheck(config_raw.get('DEFAULT', 'WIFISecurityDetectionTool'))
     wificheck.run()
 
 
@@ -69,33 +76,21 @@ def str2bool(v):
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
+
 def generateReport():
     global device
-    report = report.GenerateReport(device)
+    report = reportbuilder.GenerateReport(device)
     report.run()
 
 
 def main():
     print_title()
     print_menu()
-    # parser = argparse.ArgumentParser(description='EZVIZ device security test toolkit')
-    # parser.add_argument('ip', metavar='target_host',
-    #                     type=str,
-    #                     help='Device\'s ip address')
-    # parser.add_argument('--port', metavar='target_port',
-    #                     type=str,
-    #                     help='Port number of device under test')
-    # parser.add_argument('--testwifi', metavar='yes|no',
-    #                     type=str2bool,
-    #                     help='WIFI security test')
-    # args = parser.parse_args()
-
-    # if args.testwifi is True:
 
     while 1:
         choice = {
             0: print_menu,
-            1: serialcheck,
+            1: serial_info_check,
             2: portscan,
             3: WIFIcheck,
             4: generateReport,
@@ -107,8 +102,6 @@ def main():
 
 
 if __name__ == "__main__":
-    #设备全局变量
-    #
     device = device.DeviceInfo()
     main()
 
