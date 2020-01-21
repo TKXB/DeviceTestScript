@@ -3,16 +3,21 @@
 
 from docx import Document
 import time
+import configparser
+
+config_raw = configparser.RawConfigParser()
+config_raw.read("./config.cfg")
 
 
 class GenerateReport(object):
     def __init__(self, device):
+        self.deviceinfo = device
         self.PortList = device.PortList
         self.HostName = device.hostname
 
     def run(self):
         # 加载模板
-        document = Document('/home/tk/Documents/python.docx')
+        document = Document(config_raw.get('DEFAULT', 'WORD_TEMPLATE_PATH'))
         # 读取文档中的所有段落的列表
         tables = document.tables
         # 遍历table，并将所有单元格内容写入文件中
@@ -25,7 +30,11 @@ class GenerateReport(object):
                         cell.text = "、".join('%s' % port for port in self.PortList)
                     if cell.text == "${HostName}":
                         cell.text = self.HostName
-
+                    if cell.text == "${IsRtspVul}":
+                        if self.deviceinfo.isrtspvul:
+                            cell.text = "未启用身份认证"
+                        else:
+                            cell.text = "已启用身份认证"
         if self.HostName != '':
             document.save(self.HostName + ".docx")
         else:

@@ -43,8 +43,9 @@ def print_menu():
 
 
 def serial_info_check():
+    global device
     se = serialcheck.SerialCheck(config_raw.get('DEFAULT', 'SERIAL_PATH'))
-    se.PshCheck()
+    se.PshCheck(device)
     se.keysearch()
     se.close()
 

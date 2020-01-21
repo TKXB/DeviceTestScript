@@ -13,13 +13,14 @@ class SerialCheck(object):
             time.sleep(10)
             self.ser = serial.Serial(path, 115200, timeout=3)
 
-    def PshCheck(self):
+    def PshCheck(self, device):
         self.ser.write(b'ifconfig\r')
         result = self.ser.read(500)
         print("------------")
         print(result)
         if result.__contains__(b'netmask') or result.__contains__(b'127.0.0.1') or result.__contains__(b'BROADCAST'):
             print("\033[1;31mcan execute linux commands\n\033[0m")
+            device.islinuxcommandexe = True
         else:
             print("\033[1;32mcan not execute linux commands\n\033[0m")
 
